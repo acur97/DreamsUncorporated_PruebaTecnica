@@ -18,7 +18,7 @@ public class EnemysManager : MonoBehaviour
     private int index = -1;
     private int firstAvailableIndex = 0;
     private int lastAvailableIndex;
-    private int aliveEnemies;
+    public int aliveEnemies;
 
     private bool direction = true;
     private bool needMoveVertical = false;

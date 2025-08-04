@@ -40,10 +40,12 @@ public class VfxPool : MonoBehaviour
         {
             case Enums.VfxType.PlayerDeath:
                 vfx.spriteSheet = playerDeath;
+                AudioManager.instance.Play(Enums.AudioType.PlayerDeath);
                 break;
 
             case Enums.VfxType.EnemyDeath:
                 vfx.spriteSheet = enemyDeath;
+                AudioManager.instance.Play(Enums.AudioType.EnemyDeath);
                 break;
 
             case Enums.VfxType.BigEnemyDeath:

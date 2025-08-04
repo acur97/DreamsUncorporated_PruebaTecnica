@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
         if (ctx.performed && BulletsPool.Instance.currentPlayerBulletIndex == -1)
         {
             BulletsPool.Instance.InitBullet(Enums.BulletType.PlayerBullet, new Vector2(transform.position.x, transform.position.y + 0.45f));
+            AudioManager.instance.Play(Enums.AudioType.Bullet);
         }
     }
 

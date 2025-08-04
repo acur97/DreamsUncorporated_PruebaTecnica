@@ -10,9 +10,8 @@ public class GameManager : MonoBehaviour
     public static bool GameStarted = false;
 
     [SerializeField] private GameplaySettings settings;
-    private int lifes = 3;
-    private int highScore = 0;
-    private int trys = 1;
+    private int highScore;
+    private int trys;
 
     [Space]
     [SerializeField] private PlayerInput playerInput;
@@ -22,6 +21,9 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI counterText;
     [SerializeField] private TextMeshProUGUI lifesText;
     [SerializeField] private TextMeshProUGUI trysText;
+
+    [Space]
+    [SerializeField] private SpriteRenderer colorOverlay;
 
     [Space]
     [SerializeField] private GameObject playerLife;
@@ -35,7 +37,7 @@ public class GameManager : MonoBehaviour
         {
             Destroy(playerLifeRoot.GetChild(i).gameObject);
         }
-        for (int i = 0; i < lifes; i++)
+        for (int i = 0; i < PersistanceData.levelData.currentLives; i++)
         {
             Instantiate(playerLife, playerLifeRoot);
         }
@@ -45,6 +47,22 @@ public class GameManager : MonoBehaviour
         SetTrys();
 
         UpScores(0);
+
+        colorOverlay.sprite = settings.screenColorSheets[PlayerPrefs.GetInt("ColorOverlay", 0)];
+    }
+
+    public void ChangeColorOverlay(InputAction.CallbackContext context)
+    {
+        int index = PlayerPrefs.GetInt("ColorOverlay");
+        index++;
+
+        if (index >= settings.screenColorSheets.Length)
+        {
+            index = 0;
+        }
+
+        PlayerPrefs.SetInt("ColorOverlay", index);
+        colorOverlay.sprite = settings.screenColorSheets[index];
     }
 
     private void OnDestroy()
@@ -125,11 +143,11 @@ public class GameManager : MonoBehaviour
         StepsTimer.PauseTimer = true;
         StepsTimer.Timer -= 2.5f;
 
-        lifes--;
-        lifesText.SetText(lifes.ToString());
+        PersistanceData.levelData.currentLives--;
+        lifesText.SetText(PersistanceData.levelData.currentLives.ToString());
         Destroy(playerLifeRoot.GetChild(playerLifeRoot.childCount - 1).gameObject);
 
-        if (lifes <= 0)
+        if (PersistanceData.levelData.currentLives <= 0)
         {
             counterText.SetText("GAME OVER");
             EndGame();

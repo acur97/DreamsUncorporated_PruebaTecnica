@@ -13,6 +13,6 @@ MonoBehaviour:
   m_Name: Collision 1
   m_EditorClassIdentifier: 
   intervals: 0
-  lifeTime: 0.6
+  lifeTime: 0.5
   sprites:
   - {fileID: -289592156, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}

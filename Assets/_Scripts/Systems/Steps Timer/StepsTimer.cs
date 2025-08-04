@@ -10,6 +10,8 @@ public class StepsTimer : MonoBehaviour
     public static Action OnResume;
     public static Action DestroyEnemy;
 
+    private static uint steps = 0;
+
     [SerializeField] private GameplaySettings settings;
 
     private float stepsMulti = 1;
@@ -39,6 +41,12 @@ public class StepsTimer : MonoBehaviour
 
             Timer = 0;
             OnStep?.Invoke();
+            steps++;
+
+            if (steps % (EnemysManager.Instance.aliveEnemies + settings.beatInterval) == 0)
+            {
+                AudioManager.instance.Play(Enums.AudioType.Beat);
+            }
         }
     }
 

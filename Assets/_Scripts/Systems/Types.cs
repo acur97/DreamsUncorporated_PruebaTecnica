@@ -26,4 +26,12 @@ public class Enums
         ObstacleEnemyCollision,
         ObstaclePlayerCollision
     }
+
+    public enum AudioType
+    {
+        Beat,
+        Bullet,
+        EnemyDeath,
+        PlayerDeath
+    }
 }

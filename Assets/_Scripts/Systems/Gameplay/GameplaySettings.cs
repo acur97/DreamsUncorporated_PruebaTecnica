@@ -42,4 +42,11 @@ public class GameplaySettings : ScriptableObject
 
     [Space]
     public Sprite[] screenColorSheets;
+
+    [Header("Audio")]
+    public int beatInterval = 20;
+    public AudioClip[] beatClips;
+    public AudioClip bulletClip;
+    public AudioClip enemyDieClip;
+    public AudioClip playerDieClip;
 }

@@ -24,6 +24,7 @@ MonoBehaviour:
   bulletsSpeed: 30
   playerSpeed: 10
   horizontalPlayerLimit: 11
+  enemySpeed: 0.2
   enemyScore: 30
   minShootTime: 1
   maxShootTime: 1.5
@@ -41,3 +42,12 @@ MonoBehaviour:
   screenColorSheets:
   - {fileID: 1888447050, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
   - {fileID: -1397408114, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
+  beatInterval: 4
+  beatClips:
+  - {fileID: 8300000, guid: 0d90b1672ee78fd48b0b1749f4c79bfd, type: 3}
+  - {fileID: 8300000, guid: f2f25ac868efa124bac0625aa45db9fd, type: 3}
+  - {fileID: 8300000, guid: 431930ab26513f445a3d7c608f55e5df, type: 3}
+  - {fileID: 8300000, guid: d34a36b2c7f3fc641bf02f420264fe2c, type: 3}
+  bulletClip: {fileID: 8300000, guid: 7b6984ece71088745ad154c546caca11, type: 3}
+  enemyDieClip: {fileID: 8300000, guid: d32afed9892c6844384f42b44ea47357, type: 3}
+  playerDieClip: {fileID: 8300000, guid: 6114679beac6ed54da3f62b37bbc3a2f, type: 3}
