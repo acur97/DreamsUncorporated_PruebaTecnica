@@ -21,11 +21,11 @@ public class EnemyController : MonoBehaviour
             EnemysManager.Instance.ReturnEnemy(gameObject);
             StepsTimer.DestroyEnemy?.Invoke();
 
-            //vfx muerte
+            //vfx dead
         }
         else if (collision.CompareTag(Tags.Obstacle))
         {
-            Debug.Log("Edificio");
+            Debug.Log("Obstacle");
         }
     }
 }

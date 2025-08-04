@@ -9,11 +9,11 @@ public class BulletOnCollision : MonoBehaviour
             BulletsPool.Instance.ReturnBullet(collision.gameObject);
             BulletsPool.Instance.ReturnBullet(gameObject);
 
-            //doble vfx muerte
+            //double vfx dead
         }
         else if (collision.CompareTag(Tags.Obstacle))
         {
-            Debug.Log("Edificio");
+            Debug.Log("Obstacle");
         }
     }
 }

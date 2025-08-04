@@ -21,6 +21,8 @@ public class EnemysManager : MonoBehaviour
 
     private int index = -1;
     private int firstAvailableIndex = 0;
+    private int lastAvailableIndex;
+    private int aliveEnemies;
 
     private bool direction = true;
     private bool needMoveVertical = false;
@@ -37,6 +39,8 @@ public class EnemysManager : MonoBehaviour
         pool = new Pool<EnemyController>(rows * columns, prefab, parent);
         enemies = new EnemyController[rows, columns];
         lastAvailableRow = new int[columns];
+        lastAvailableIndex = pool.objects.Length - 1;
+        aliveEnemies = pool.objects.Length;
 
         offsetY = topY - (rows - 1) * spaceY;
         offsetX = -((columns - 1) * spaceX) / 2f;
@@ -60,6 +64,13 @@ public class EnemysManager : MonoBehaviour
 
     private void RealIndex()
     {
+        if (aliveEnemies <= 0)
+        {
+            Debug.Log("End");
+            Debug.Break();
+            return;
+        }
+
         UpIndex();
 
         if (!pool.objects[index].gameObject.activeSelf)
@@ -91,10 +102,10 @@ public class EnemysManager : MonoBehaviour
 
         pool.objects[index].MoveDown();
 
-        if (index == pool.objects.Length - 1)
+        if (index == lastAvailableIndex)
         {
             movingVertical = false;
-            skipMoveVertical = 2;
+            skipMoveVertical = 3;
             direction = !direction;
         }
     }
@@ -133,6 +144,7 @@ public class EnemysManager : MonoBehaviour
     public void ReturnEnemy(GameObject enemy)
     {
         enemy.SetActive(false);
+        aliveEnemies--;
 
         for (int j = 0; j < columns; j++)
         {
@@ -161,6 +173,15 @@ public class EnemysManager : MonoBehaviour
                 break;
             }
         }
+
+        for (int i = pool.objects.Length - 1; i >= 0; i--)
+        {
+            if (pool.objects[i].gameObject.activeSelf)
+            {
+                lastAvailableIndex = i;
+                break;
+            }
+        }
     }
 
     private void Update()
@@ -172,7 +193,7 @@ public class EnemysManager : MonoBehaviour
             shootTimer = 0f;
             shootRandomInterval = Random.Range(minTime, maxTime);
 
-            //SearchBottomEnemy(Random.Range(0, columns));
+            SearchBottomEnemy(Random.Range(0, columns));
         }
     }
 
@@ -182,7 +203,7 @@ public class EnemysManager : MonoBehaviour
         {
             column++;
 
-            if (column > columns)
+            if (column >= columns)
             {
                 column = 0;
             }

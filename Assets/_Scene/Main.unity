@@ -806,7 +806,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stepDuration: 0.02
-  stepsMultiplier: 0.2
+  stepsMultiplier: 0.35
 --- !u!1 &983942508
 GameObject:
   m_ObjectHideFlags: 0
