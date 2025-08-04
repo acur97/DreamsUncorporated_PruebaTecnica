@@ -1,5 +1,5 @@
 # DreamsUncorporated_PruebaTecnica
-Videojuego como prueba tecnica basado en el arcade Space Invaders de 1978.
+Videojuego como prueba tecnica basado en el arcade Space Invaders de 1978, se intento mantener lo mas fiel posible al juego original.
 
 - Un ejecutable del juego se puede descargar desde la pagina de [Releases](https://github.com/acur97/DreamsUncorporated_PruebaTecnica/releases)
 
