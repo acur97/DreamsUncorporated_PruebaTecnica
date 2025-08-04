@@ -14,6 +14,9 @@ public class EnemysManager : MonoBehaviour
     [SerializeField] private EnemyController prefab;
     [SerializeField] private Transform parent;
 
+    [Space]
+    [SerializeField] private SpriteSheets[] enemySheets;
+
     private EnemyController[,] enemies;
     private int[] lastAvailableRow;
     private Pool<EnemyController> pool;
@@ -51,6 +54,20 @@ public class EnemysManager : MonoBehaviour
             {
                 enemies[i, j] = pool.Get(i * columns + j);
                 enemies[i, j].transform.localPosition = new Vector2(offsetX + j * spaceX, offsetY + i * spaceY);
+
+                if (i == rows - 1)
+                {
+                    enemies[i, j].animator.spriteSheet = enemySheets[0];
+                }
+                else if (i == rows - 2 || i == rows - 3)
+                {
+                    enemies[i, j].animator.spriteSheet = enemySheets[1];
+                }
+                else
+                {
+                    enemies[i, j].animator.spriteSheet = enemySheets[2];
+                }
+
                 enemies[i, j].gameObject.SetActive(true);
             }
         }
@@ -186,6 +203,9 @@ public class EnemysManager : MonoBehaviour
 
     private void Update()
     {
+        if (StepsTimer.PauseTimer)
+            return;
+
         shootTimer += Time.deltaTime;
 
         if (shootTimer >= shootRandomInterval)

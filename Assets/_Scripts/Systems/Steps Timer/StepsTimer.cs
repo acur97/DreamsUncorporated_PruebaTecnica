@@ -3,12 +3,15 @@ using UnityEngine;
 
 public class StepsTimer : MonoBehaviour
 {
+    public static bool PauseTimer = false;
+    public static float Timer;
+
     public static Action OnStep;
+    public static Action OnResume;
     public static Action DestroyEnemy;
 
     [SerializeField] private float stepDuration;
     [SerializeField] private float stepsMultiplier;
-    private float timer;
     private float stepsMulti = 1;
 
     private void Awake()
@@ -18,17 +21,23 @@ public class StepsTimer : MonoBehaviour
 
     private void SetHoldSteps()
     {
-        timer -= 0.3f;
+        Timer -= 0.3f;
         stepsMulti += stepsMultiplier;
     }
 
     private void Update()
     {
-        timer += Time.deltaTime * stepsMulti;
+        Timer += Time.deltaTime * stepsMulti;
 
-        if (timer >= stepDuration)
+        if (Timer >= stepDuration)
         {
-            timer = 0;
+            if (PauseTimer)
+            {
+                PauseTimer = false;
+                OnResume?.Invoke();
+            }
+
+            Timer = 0;
             OnStep?.Invoke();
         }
     }

@@ -66,18 +66,54 @@ public class BulletsPool : MonoBehaviour
             if (poolObjects.objects[i].transform.position.y >= limitY ||
                 poolObjects.objects[i].transform.position.y <= -limitY)
             {
-                ReturnBullet(poolObjects.objects[i].gameObject);
+                ReturnBullet(poolObjects.objects[i].gameObject, true);
             }
         }
     }
 
-    public void ReturnBullet(GameObject bullet /*, Agregar enum de tipo de vfx al morir */)
+    public void ReturnBullet(GameObject bullet, bool vfx = false, bool dontDestroy = false)
     {
         bullet.SetActive(false);
 
         if (bullet.transform.GetSiblingIndex() == currentPlayerBulletIndex)
         {
             currentPlayerBulletIndex = -1;
+
+            if (vfx)
+            {
+                // vfx player
+                VfxPool.instance.InitVfx(
+                    Enums.VfxType.ObstaclePlayerCollision,
+                    GetContactPosition(bullet.transform.GetSiblingIndex()),
+                    dontDestroy);
+            }
+        }
+        else
+        {
+            if (vfx)
+            {
+                // vfx enemy
+                VfxPool.instance.InitVfx(
+                    Enums.VfxType.ObstacleEnemyCollision,
+                    GetContactPosition(bullet.transform.GetSiblingIndex()),
+                    dontDestroy);
+            }
+        }
+    }
+
+    private Vector2 GetContactPosition(int index)
+    {
+        if (poolObjects.objects[index].transform.localEulerAngles == Vector3.zero)
+        {
+            return new Vector2(
+                poolObjects.objects[index].transform.position.x,
+                poolObjects.objects[index].transform.position.y - 1);
+        }
+        else
+        {
+            return new Vector2(
+                poolObjects.objects[index].transform.position.x,
+                poolObjects.objects[index].transform.position.y + 1);
         }
     }
 }

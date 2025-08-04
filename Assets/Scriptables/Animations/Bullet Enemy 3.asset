@@ -10,12 +10,12 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c27ee12a0d553c3459614b92f052f190, type: 3}
-  m_Name: Bullet 1
+  m_Name: Bullet Enemy 3
   m_EditorClassIdentifier: 
   intervals: 0.05
   lifeTime: 0
   sprites:
-  - {fileID: -2079471853, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
-  - {fileID: -1054687367, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
-  - {fileID: 24532778, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
-  - {fileID: -50480616, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
+  - {fileID: -1883140073, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
+  - {fileID: 487516328, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
+  - {fileID: -1883140073, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
+  - {fileID: -400010846, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}

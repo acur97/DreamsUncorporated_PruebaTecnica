@@ -2,9 +2,9 @@ using UnityEngine;
 
 public class SimpleAnimator : MonoBehaviour
 {
-    [SerializeField] private new SpriteRenderer renderer;
-
+    public new SpriteRenderer renderer;
     public SpriteSheets spriteSheet;
+    public bool noLifeTime = false;
 
     private float timer = 0;
     private int frame = 0;
@@ -12,12 +12,15 @@ public class SimpleAnimator : MonoBehaviour
 
     private void OnEnable()
     {
-        renderer.sprite = spriteSheet.sprites[0];
+        life = 0;
+        timer = 0;
+        frame = 0;
+        renderer.sprite = spriteSheet.sprites[frame];
     }
 
     private void Update()
     {
-        if (spriteSheet.lifeTime != 0)
+        if (spriteSheet.lifeTime != 0 && !noLifeTime)
         {
             life += Time.deltaTime;
 
@@ -28,15 +31,20 @@ public class SimpleAnimator : MonoBehaviour
             }
         }
 
-        if (spriteSheet.intervals == 0)
-            return;
-
-        timer += Time.deltaTime;
-        if (timer >= spriteSheet.intervals)
+        if (spriteSheet.intervals != 0)
         {
-            timer = 0;
-            frame = (frame + 1) % spriteSheet.sprites.Length;
-            renderer.sprite = spriteSheet.sprites[frame];
+            timer += Time.deltaTime;
+            if (timer >= spriteSheet.intervals)
+            {
+                timer = 0;
+                NextFrame();
+            }
         }
+    }
+
+    public void NextFrame()
+    {
+        frame = (frame + 1) % spriteSheet.sprites.Length;
+        renderer.sprite = spriteSheet.sprites[frame];
     }
 }

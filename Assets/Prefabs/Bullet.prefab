@@ -50,6 +50,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   renderer: {fileID: 5840667146495746162}
   spriteSheet: {fileID: 0}
+  noLifeTime: 0
 --- !u!114 &267075497763310562
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -181,7 +182,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: -1
+  m_SortingOrder: 2
   m_Sprite: {fileID: -2079471853, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0

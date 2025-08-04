@@ -24,7 +24,6 @@ public class Enums
         EnemyDeath,
         BigEnemyDeath,
         ObstacleEnemyCollision,
-        ObstaclePlayerCollision,
-        BulletCollision
+        ObstaclePlayerCollision
     }
 }

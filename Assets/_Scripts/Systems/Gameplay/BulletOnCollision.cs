@@ -6,14 +6,12 @@ public class BulletOnCollision : MonoBehaviour
     {
         if (collision.CompareTag(Tags.Bullet))
         {
-            BulletsPool.Instance.ReturnBullet(collision.gameObject);
-            BulletsPool.Instance.ReturnBullet(gameObject);
-
-            //double vfx dead
+            BulletsPool.Instance.ReturnBullet(collision.gameObject, true);
+            BulletsPool.Instance.ReturnBullet(gameObject, true);
         }
-        else if (collision.CompareTag(Tags.Obstacle))
-        {
-            Debug.Log("Obstacle");
-        }
+        //else if (collision.CompareTag(Tags.Obstacle))
+        //{
+        //    Debug.Log("Obstacle");
+        //}
     }
 }

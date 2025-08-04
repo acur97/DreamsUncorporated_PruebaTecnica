@@ -5,6 +5,7 @@ public class PlayerController : MonoBehaviour
 {
     [SerializeField] private float speed;
     [SerializeField] private float limitX;
+    [SerializeField] private new SpriteRenderer renderer;
 
     private float moving;
 
@@ -23,6 +24,9 @@ public class PlayerController : MonoBehaviour
 
     private void Update()
     {
+        if (StepsTimer.PauseTimer)
+            return;
+
         UpdatePosition();
     }
 
@@ -38,8 +42,19 @@ public class PlayerController : MonoBehaviour
         if (collision.CompareTag(Tags.Bullet))
         {
             BulletsPool.Instance.ReturnBullet(collision.gameObject);
+            renderer.enabled = false;
+            VfxPool.instance.InitVfx(
+                Enums.VfxType.PlayerDeath,
+                transform.position);
 
-            //bajar vida
+            StepsTimer.OnResume += ResumeGame;
+            GameManager.instance.RemoveLife();
         }
+    }
+
+    private void ResumeGame()
+    {
+        renderer.enabled = true;
+        StepsTimer.OnResume -= ResumeGame;
     }
 }
