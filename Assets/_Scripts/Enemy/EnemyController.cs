@@ -6,6 +6,10 @@ public class EnemyController : MonoBehaviour
 
     public SimpleAnimator animator;
 
+    /// <summary>
+    /// Move the enemy horizontally
+    /// </summary>
+    /// <param name="right">true = move right, false = move left</param>
     public void MoveHorizontal(bool right)
     {
         transform.localPosition = new Vector2(
@@ -17,6 +21,9 @@ public class EnemyController : MonoBehaviour
         UpdateSpriteFrame();
     }
 
+    /// <summary>
+    /// Move the enemy down
+    /// </summary>
     public void MoveDown()
     {
         transform.localPosition = new Vector2(
@@ -26,11 +33,18 @@ public class EnemyController : MonoBehaviour
         UpdateSpriteFrame();
     }
 
+    /// <summary>
+    /// Change to the next sprite frame
+    /// </summary>
     private void UpdateSpriteFrame()
     {
         animator.NextFrame();
     }
 
+    /// <summary>
+    /// Check if a bullet hit this enemy
+    /// </summary>
+    /// <param name="collision">the bullet that hit</param>
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag(Tags.Bullet))

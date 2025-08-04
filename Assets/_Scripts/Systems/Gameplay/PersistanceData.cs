@@ -16,6 +16,9 @@ public class PersistanceData : MonoBehaviour
 
     [SerializeField] private GameplaySettings settings;
 
+    /// <summary>
+    /// Singleton, sets the initial LevelData values like the lifes
+    /// </summary>
     private void Awake()
     {
         if (instance != null)
@@ -37,12 +40,19 @@ public class PersistanceData : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Increases the level and the lifes for the next level
+    /// </summary>
     public static void UpLevel()
     {
         levelData.currentLevel++;
         levelData.currentLives++;
     }
 
+    /// <summary>
+    /// A multiplier used to increase the speed or difficulty of the game
+    /// </summary>
+    /// <returns></returns>
     public static float GetLevelMultiplier()
     {
         return 1 + (levelData.currentLevel * 0.75f);

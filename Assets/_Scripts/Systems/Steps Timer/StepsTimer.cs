@@ -21,12 +21,19 @@ public class StepsTimer : MonoBehaviour
         DestroyEnemy += SetHoldSteps;
     }
 
+    /// <summary>
+    /// Slows down the next tick for a short time, and increases the multiplier for the next ticks to be faster
+    /// </summary>
     private void SetHoldSteps()
     {
         Timer -= 0.3f;
         stepsMulti += settings.stepsMultiplier;
     }
 
+    /// <summary>
+    /// Updates the timer and sends the actions if the tick is over,
+    /// also plays the heart beat sound
+    /// </summary>
     private void Update()
     {
         Timer += Time.deltaTime * stepsMulti;

@@ -31,6 +31,12 @@ public class VfxPool : MonoBehaviour
         pool = new Pool<SimpleAnimator>(poolSize, prefab, transform);
     }
 
+    /// <summary>
+    /// Init/Enable the vfx
+    /// </summary>
+    /// <param name="type">the type of vfx to use</param>
+    /// <param name="position">point to start the vfx</param>
+    /// <param name="dontDestroy">used for the obstacles to stay on the screen</param>
     public void InitVfx(Enums.VfxType type, Vector2 position, bool dontDestroy = false)
     {
         vfx = pool.Get();

@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,12 +24,15 @@ public class GameManager : MonoBehaviour
     [SerializeField] private TextMeshProUGUI trysText;
 
     [Space]
-    [SerializeField] private SpriteRenderer colorOverlay;
+    [SerializeField] private Image colorOverlay;
 
     [Space]
     [SerializeField] private GameObject playerLife;
     [SerializeField] private Transform playerLifeRoot;
 
+    /// <summary>
+    /// Init player ui elements
+    /// </summary>
     private void Awake()
     {
         instance = this;
@@ -51,6 +55,10 @@ public class GameManager : MonoBehaviour
         colorOverlay.sprite = settings.screenColorSheets[PlayerPrefs.GetInt("ColorOverlay", 0)];
     }
 
+    /// <summary>
+    /// Switch between diferent sprite color overlays for the screen, to simulate the arcade retro style
+    /// </summary>
+    /// <param name="context"></param>
     public void ChangeColorOverlay(InputAction.CallbackContext context)
     {
         int index = PlayerPrefs.GetInt("ColorOverlay");
@@ -70,22 +78,36 @@ public class GameManager : MonoBehaviour
         GameStarted = false;
     }
 
+    /// <summary>
+    /// Starts a little animation of the counter
+    /// </summary>
     private void Start()
     {
         _ = InitCounter();
     }
 
+    /// <summary>
+    /// Updates the ui top scores texts
+    /// </summary>
+    /// <param name="amount"></param>
     public void UpScores(int amount)
     {
         PersistanceData.levelData.currentScore += amount;
         scoresText.SetText($"{PersistanceData.levelData.currentScore:D4}           {highScore:D4}           0000");
     }
 
+    /// <summary>
+    /// Updates the ui botton trys text
+    /// </summary>
     private void SetTrys()
     {
         trysText.SetText($"CREDIT {trys:D2}");
     }
 
+    /// <summary>
+    /// The animation that starts each level
+    /// </summary>
+    /// <returns></returns>
     private async Task InitCounter()
     {
         scoresText.SetText(string.Empty);
@@ -138,6 +160,9 @@ public class GameManager : MonoBehaviour
         GameStarted = true;
     }
 
+    /// <summary>
+    /// Removes a life if the player loses, update the ui and save the data, also check if the game is over
+    /// </summary>
     public void RemoveLife()
     {
         StepsTimer.PauseTimer = true;
@@ -154,12 +179,19 @@ public class GameManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Resets to the same scene, the data for the new level is stored in a persistence object
+    /// </summary>
+    /// <param name="context"></param>
     private void ResetScene(InputAction.CallbackContext context)
     {
         playerInput.actions.FindAction("Submit").performed -= ResetScene;
         SceneManager.LoadScene(0);
     }
 
+    /// <summary>
+    /// Starts the next level, also checks if the game is over
+    /// </summary>
     public void WinRound()
     {
         if (PersistanceData.levelData.currentLevel == 9)
@@ -173,6 +205,9 @@ public class GameManager : MonoBehaviour
         ResetScene(default);
     }
 
+    /// <summary>
+    /// The final Game Over screen, also saves the data
+    /// </summary>
     private void EndGame()
     {
         GameStarted = false;

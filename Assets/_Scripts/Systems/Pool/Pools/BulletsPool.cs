@@ -19,6 +19,11 @@ public class BulletsPool : MonoBehaviour
         poolObjects = new Pool<SimpleAnimator>(poolSize, prefab, transform);
     }
 
+    /// <summary>
+    /// Init/Enable the bullet
+    /// </summary>
+    /// <param name="type">player or enemy</param>
+    /// <param name="position">point to move the bullet</param>
     public void InitBullet(Enums.BulletType type, Vector2 position)
     {
         poolObjects.Get(out SimpleAnimator _object, out int index);
@@ -40,6 +45,9 @@ public class BulletsPool : MonoBehaviour
         _object.gameObject.SetActive(true);
     }
 
+    /// <summary>
+    /// Move all the active bullets and disable outside the screen bullets.
+    /// </summary>
     private void Update()
     {
         for (int i = 0; i < poolSize; i++)
@@ -66,6 +74,12 @@ public class BulletsPool : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Disable the bullet for later use
+    /// </summary>
+    /// <param name="bullet">the bullet to disable</param>
+    /// <param name="vfx">spawn automatic vfx</param>
+    /// <param name="dontDestroy">use this and vfx = true to not destroy the vfx</param>
     public void ReturnBullet(GameObject bullet, bool vfx = false, bool dontDestroy = false)
     {
         bullet.SetActive(false);
@@ -76,7 +90,6 @@ public class BulletsPool : MonoBehaviour
 
             if (vfx)
             {
-                // vfx player
                 VfxPool.instance.InitVfx(
                     Enums.VfxType.ObstaclePlayerCollision,
                     GetContactPosition(bullet.transform.GetSiblingIndex()),
@@ -87,7 +100,6 @@ public class BulletsPool : MonoBehaviour
         {
             if (vfx)
             {
-                // vfx enemy
                 VfxPool.instance.InitVfx(
                     Enums.VfxType.ObstacleEnemyCollision,
                     GetContactPosition(bullet.transform.GetSiblingIndex()),
@@ -96,6 +108,11 @@ public class BulletsPool : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Get the position to spawn the vfx in the border of the sprite
+    /// </summary>
+    /// <param name="index">use GetSiblingIndex, this pool uses the spawn order</param>
+    /// <returns></returns>
     private Vector2 GetContactPosition(int index)
     {
         if (poolObjects.objects[index].transform.localEulerAngles == Vector3.zero)

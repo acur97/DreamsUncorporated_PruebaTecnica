@@ -28,6 +28,9 @@ public class EnemysManager : MonoBehaviour
     private float shootRandomInterval;
     private float shootTimer = 0f;
 
+    /// <summary>
+    /// Init all the enemies, positions in the grid, set the 2D array, sprite to use and add the listeners from the StepsTimer
+    /// </summary>
     private void Awake()
     {
         Instance = this;
@@ -73,6 +76,9 @@ public class EnemysManager : MonoBehaviour
         shootRandomInterval = settings.maxShootTime;
     }
 
+    /// <summary>
+    /// Spawn visually the enemies in a flow-like animation
+    /// </summary>
     private void Init()
     {
         bool found = false;
@@ -89,6 +95,9 @@ public class EnemysManager : MonoBehaviour
             StepsTimer.OnStep -= Init;
     }
 
+    /// <summary>
+    /// Checks for the real index of the current StepsTimer tick, the index skips the disabled enemies
+    /// </summary>
     private void RealIndex()
     {
         if (!GameManager.GameStarted)
@@ -109,6 +118,9 @@ public class EnemysManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Sets the index and sets booleans for vertical movement and the first available index
+    /// </summary>
     private void UpIndex()
     {
         index++;
@@ -125,6 +137,9 @@ public class EnemysManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Move the enemies down until the last enemy in the list
+    /// </summary>
     private void MoveEnemiesDown()
     {
         if (!movingVertical)
@@ -140,6 +155,9 @@ public class EnemysManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Move the enemies horizontally and checks if some enemy is outside the borders to start a vertical movement, or end the level
+    /// </summary>
     private void OnStep()
     {
         if (!GameManager.GameStarted)
@@ -180,6 +198,10 @@ public class EnemysManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Disables the enemy, and makes logic to update lastAvailableRow, firstAvailableIndex and lastAvailableIndexes
+    /// </summary>
+    /// <param name="enemy"></param>
     public void ReturnEnemy(GameObject enemy)
     {
         enemy.SetActive(false);
@@ -223,6 +245,9 @@ public class EnemysManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Ticks the shoot timer
+    /// </summary>
     private void Update()
     {
         if (StepsTimer.PauseTimer ||
@@ -240,6 +265,10 @@ public class EnemysManager : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Finds the bottom enemy for an available column to shoot
+    /// </summary>
+    /// <param name="column"></param>
     private void SearchBottomEnemy(int column)
     {
         if (lastAvailableRow[column] == -1)

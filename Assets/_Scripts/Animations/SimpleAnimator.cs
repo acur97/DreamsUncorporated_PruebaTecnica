@@ -10,6 +10,9 @@ public class SimpleAnimator : MonoBehaviour
     private int frame = 0;
     private float life = 0;
 
+    /// <summary>
+    /// Starts the first frame of the animation
+    /// </summary>
     private void OnEnable()
     {
         life = 0;
@@ -18,6 +21,9 @@ public class SimpleAnimator : MonoBehaviour
         renderer.sprite = spriteSheet.sprites[frame];
     }
 
+    /// <summary>
+    /// Changes the sprites depending on the intervals
+    /// </summary>
     private void Update()
     {
         if (spriteSheet.lifeTime != 0 && !noLifeTime)
@@ -42,6 +48,9 @@ public class SimpleAnimator : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Manually updates to the next frame
+    /// </summary>
     public void NextFrame()
     {
         frame = (frame + 1) % spriteSheet.sprites.Length;

@@ -1,5 +1,9 @@
 using UnityEngine.Scripting;
 
+/// <summary>
+/// This file contains all the common constants and enums used in the project
+/// </summary>
+
 [Preserve]
 public class Tags
 {

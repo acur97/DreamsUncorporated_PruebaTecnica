@@ -1,6 +1,9 @@
 using UnityEngine;
 
 [CreateAssetMenu(fileName = "Gameplay Settings", menuName = "Scriptable Objects/Gameplay Settings", order = 1)]
+/// <summary>
+/// All the variables that many scripts uses
+/// </summary>
 public class GameplaySettings : ScriptableObject
 {
     [Header("Level")]

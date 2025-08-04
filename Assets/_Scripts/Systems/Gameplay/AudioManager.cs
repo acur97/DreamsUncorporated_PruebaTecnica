@@ -14,6 +14,10 @@ public class AudioManager : MonoBehaviour
         instance = this;
     }
 
+    /// <summary>
+    /// Play an audio once
+    /// </summary>
+    /// <param name="type">the type of audio to play</param>
     public void Play(Enums.AudioType type)
     {
         switch (type)
