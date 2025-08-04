@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class Pool<T> where T : Object
 {
+    public int size;
     public T[] objects;
 
     public Pool(int size, T prefab, Transform parent = null)
     {
+        this.size = size;
         objects = new T[size];
 
         for (int i = 0; i < size; i++)
@@ -19,18 +21,32 @@ public class Pool<T> where T : Object
         return objects[index];
     }
 
-    //public T GetComponet(int index)
-    //{
-    //    return (objects[index] as GameObject).GetComponent<T>();
-    //}
-
-    public void Enable(int index)
+    public T Get()
     {
-        (objects[index] as GameObject).SetActive(true);
+        for (int i = 0; i < size; i++)
+        {
+            if (!(objects[i] as Component).gameObject.activeSelf)
+            {
+                return objects[i];
+            }
+        }
+
+        return null;
     }
 
-    public void Disable(int index)
+    public void Get(out T _object, out int index)
     {
-        (objects[index] as GameObject).SetActive(false);
+        for (int i = 0; i < size; i++)
+        {
+            if (!(objects[i] as Component).gameObject.activeSelf)
+            {
+                _object = objects[i];
+                index = i;
+                return;
+            }
+        }
+
+        _object = null;
+        index = -1;
     }
 }

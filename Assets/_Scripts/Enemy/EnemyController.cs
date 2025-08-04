@@ -12,4 +12,20 @@ public class EnemyController : MonoBehaviour
     {
         transform.localPosition = new Vector2(transform.localPosition.x, transform.localPosition.y - 0.2f);
     }
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag(Tags.Bullet))
+        {
+            BulletsPool.Instance.ReturnBullet(collision.gameObject);
+            EnemysManager.Instance.ReturnEnemy(gameObject);
+            StepsTimer.DestroyEnemy?.Invoke();
+
+            //vfx muerte
+        }
+        else if (collision.CompareTag(Tags.Obstacle))
+        {
+            Debug.Log("Edificio");
+        }
+    }
 }

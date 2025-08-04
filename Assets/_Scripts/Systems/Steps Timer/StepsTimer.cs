@@ -4,24 +4,27 @@ using UnityEngine;
 public class StepsTimer : MonoBehaviour
 {
     public static Action OnStep;
-    public static Action<float> HoldSteps;
+    public static Action DestroyEnemy;
 
     [SerializeField] private float stepDuration;
+    [SerializeField] private float stepsMultiplier;
     private float timer;
+    private float stepsMulti = 1;
 
     private void Awake()
     {
-        HoldSteps += SetHoldSteps;
+        DestroyEnemy += SetHoldSteps;
     }
 
-    private void SetHoldSteps(float hold)
+    private void SetHoldSteps()
     {
-        timer -= hold;
+        timer -= 0.3f;
+        stepsMulti += stepsMultiplier;
     }
 
     private void Update()
     {
-        timer += Time.deltaTime;
+        timer += Time.deltaTime * stepsMulti;
 
         if (timer >= stepDuration)
         {
