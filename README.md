@@ -5,7 +5,7 @@ Videojuego como prueba tecnica basado en el arcade Space Invaders de 1978, se in
 
 # Controles
 - La tecla "K" te permite intercambiar entre dos modos de colores, Emulando el estilo arcade del juego en su epoca
-- Movimiento con las teclas AD o las Flechas, en control es con el Joystick o el D-Pad.
+- Movimiento con las teclas AD o las Flechas, en control es con el Joystick.
 - Disparo con clic del Mouse o Boton principal del control.
 
 ### Requerimientos técnicos
