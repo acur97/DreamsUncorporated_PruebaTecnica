@@ -10,8 +10,8 @@ public class StepsTimer : MonoBehaviour
     public static Action OnResume;
     public static Action DestroyEnemy;
 
-    [SerializeField] private float stepDuration;
-    [SerializeField] private float stepsMultiplier;
+    [SerializeField] private GameplaySettings settings;
+
     private float stepsMulti = 1;
 
     private void Awake()
@@ -22,14 +22,14 @@ public class StepsTimer : MonoBehaviour
     private void SetHoldSteps()
     {
         Timer -= 0.3f;
-        stepsMulti += stepsMultiplier;
+        stepsMulti += settings.stepsMultiplier;
     }
 
     private void Update()
     {
         Timer += Time.deltaTime * stepsMulti;
 
-        if (Timer >= stepDuration)
+        if (Timer >= settings.stepDuration)
         {
             if (PauseTimer)
             {
@@ -40,5 +40,12 @@ public class StepsTimer : MonoBehaviour
             Timer = 0;
             OnStep?.Invoke();
         }
+    }
+
+    private void OnDestroy()
+    {
+        OnStep = null;
+        OnResume = null;
+        DestroyEnemy = null;
     }
 }

@@ -1,0 +1,43 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93bedf28ac1c2784ba1df45de62afdd1, type: 3}
+  m_Name: Gameplay Settings
+  m_EditorClassIdentifier: 
+  rows: 5
+  columns: 11
+  lifes: 3
+  spaceX: 1.8
+  spaceY: 2
+  topSpawn: 7.5
+  horizontalScreenLimit: 10.5
+  bottomScreenLimit: -7.45
+  bulletScreenLimit: 11.4
+  bulletsSpeed: 30
+  playerSpeed: 10
+  horizontalPlayerLimit: 11
+  enemyScore: 30
+  minShootTime: 1
+  maxShootTime: 1.5
+  stepDuration: 0.02
+  stepsMultiplier: 0.35
+  enemiesSheets:
+  - {fileID: 11400000, guid: f2036ee5e8d1b504a9512bd7ae1cbf1f, type: 2}
+  - {fileID: 11400000, guid: 46f0084c8b4189e4a84147c89e1b2e51, type: 2}
+  - {fileID: 11400000, guid: 2f455b4f0e4ab9e4497eb2787a671ebf, type: 2}
+  playerBulletSheet: {fileID: 11400000, guid: 0a7546676bb782e4d97ade169c38676b, type: 2}
+  enemiesBulletSheets:
+  - {fileID: 11400000, guid: a882f93c12ec4b640a88756eed3d652e, type: 2}
+  - {fileID: 11400000, guid: f719da9365293b240b0ef48d9d0fe4d5, type: 2}
+  - {fileID: 11400000, guid: 55091254f91da1940849dd4edebbd6eb, type: 2}
+  screenColorSheets:
+  - {fileID: 1888447050, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}
+  - {fileID: -1397408114, guid: fd58c51c962dd8248aa39db9fbdefe2f, type: 3}

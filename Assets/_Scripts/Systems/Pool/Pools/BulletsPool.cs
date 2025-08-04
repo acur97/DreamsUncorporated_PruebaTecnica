@@ -4,14 +4,9 @@ public class BulletsPool : MonoBehaviour
 {
     public static BulletsPool Instance;
 
+    [SerializeField] private GameplaySettings settings;
     [SerializeField] private SimpleAnimator prefab;
     [SerializeField] private int poolSize;
-    [SerializeField] private float speed;
-    [SerializeField] private float limitY;
-
-    [Space]
-    [SerializeField] private SpriteSheets playerBulletSpriteSheet;
-    [SerializeField] private SpriteSheets[] enemieBulletSpriteSheets;
 
     private Pool<SimpleAnimator> poolObjects;
 
@@ -33,12 +28,12 @@ public class BulletsPool : MonoBehaviour
         if (type == Enums.BulletType.PlayerBullet)
         {
             currentPlayerBulletIndex = index;
-            _object.spriteSheet = playerBulletSpriteSheet;
+            _object.spriteSheet = settings.playerBulletSheet;
             _object.transform.localEulerAngles = new Vector3(0, 0, 180);
         }
         else
         {
-            _object.spriteSheet = enemieBulletSpriteSheets[Random.Range(0, enemieBulletSpriteSheets.Length)];
+            _object.spriteSheet = settings.enemiesBulletSheets[Random.Range(0, settings.enemiesBulletSheets.Length)];
             _object.transform.localEulerAngles = Vector3.zero;
         }
 
@@ -56,15 +51,15 @@ public class BulletsPool : MonoBehaviour
 
             if (i == currentPlayerBulletIndex)
             {
-                poolObjects.objects[i].transform.position -= speed * Time.deltaTime * poolObjects.objects[i].transform.up;
+                poolObjects.objects[i].transform.position -= settings.bulletsSpeed * Time.deltaTime * poolObjects.objects[i].transform.up;
             }
             else
             {
-                poolObjects.objects[i].transform.position -= speed * 0.5f * Time.deltaTime * poolObjects.objects[i].transform.up;
+                poolObjects.objects[i].transform.position -= settings.bulletsSpeed * 0.5f * Time.deltaTime * poolObjects.objects[i].transform.up;
             }
 
-            if (poolObjects.objects[i].transform.position.y >= limitY ||
-                poolObjects.objects[i].transform.position.y <= -limitY)
+            if (poolObjects.objects[i].transform.position.y >= settings.bulletScreenLimit ||
+                poolObjects.objects[i].transform.position.y <= -settings.bulletScreenLimit)
             {
                 ReturnBullet(poolObjects.objects[i].gameObject, true);
             }

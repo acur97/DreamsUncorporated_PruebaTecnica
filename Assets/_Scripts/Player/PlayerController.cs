@@ -3,28 +3,32 @@ using UnityEngine.InputSystem;
 
 public class PlayerController : MonoBehaviour
 {
-    [SerializeField] private float speed;
-    [SerializeField] private float limitX;
+    [SerializeField] private GameplaySettings settings;
     [SerializeField] private new SpriteRenderer renderer;
 
     private float moving;
 
     public void OnMove(InputAction.CallbackContext ctx)
     {
-        moving = ctx.ReadValue<float>() * speed * Time.deltaTime;
+        moving = ctx.ReadValue<float>() * settings.playerSpeed * Time.deltaTime;
     }
 
     public void OnFire(InputAction.CallbackContext ctx)
     {
+        if (StepsTimer.PauseTimer ||
+            !GameManager.GameStarted)
+            return;
+
         if (ctx.performed && BulletsPool.Instance.currentPlayerBulletIndex == -1)
         {
-            BulletsPool.Instance.InitBullet(Enums.BulletType.PlayerBullet, new Vector2(transform.position.x, transform.position.y + 0.4f));
+            BulletsPool.Instance.InitBullet(Enums.BulletType.PlayerBullet, new Vector2(transform.position.x, transform.position.y + 0.45f));
         }
     }
 
     private void Update()
     {
-        if (StepsTimer.PauseTimer)
+        if (StepsTimer.PauseTimer ||
+            !GameManager.GameStarted)
             return;
 
         UpdatePosition();
@@ -33,7 +37,7 @@ public class PlayerController : MonoBehaviour
     private void UpdatePosition()
     {
         transform.localPosition = new Vector2(
-            Mathf.Clamp(transform.localPosition.x + moving, -limitX, limitX),
+            Mathf.Clamp(transform.localPosition.x + moving, -settings.horizontalPlayerLimit, settings.horizontalPlayerLimit),
             transform.localPosition.y);
     }
 
@@ -54,6 +58,9 @@ public class PlayerController : MonoBehaviour
 
     private void ResumeGame()
     {
+        if (!GameManager.GameStarted)
+            return;
+
         renderer.enabled = true;
         StepsTimer.OnResume -= ResumeGame;
     }

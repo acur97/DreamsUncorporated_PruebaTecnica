@@ -4,18 +4,11 @@ public class EnemysManager : MonoBehaviour
 {
     public static EnemysManager Instance;
 
-    [SerializeField] private int rows, columns;
-    [SerializeField] private float spaceX, spaceY;
-    [SerializeField] private float topY;
-    [SerializeField] private float limitX;
-    [SerializeField] private float minTime, maxTime;
+    [SerializeField] private GameplaySettings settings;
 
     [Space]
     [SerializeField] private EnemyController prefab;
     [SerializeField] private Transform parent;
-
-    [Space]
-    [SerializeField] private SpriteSheets[] enemySheets;
 
     private EnemyController[,] enemies;
     private int[] lastAvailableRow;
@@ -39,52 +32,72 @@ public class EnemysManager : MonoBehaviour
     {
         Instance = this;
 
-        pool = new Pool<EnemyController>(rows * columns, prefab, parent);
-        enemies = new EnemyController[rows, columns];
-        lastAvailableRow = new int[columns];
+        pool = new Pool<EnemyController>(settings.rows * settings.columns, prefab, parent);
+        enemies = new EnemyController[settings.rows, settings.columns];
+        lastAvailableRow = new int[settings.columns];
         lastAvailableIndex = pool.objects.Length - 1;
         aliveEnemies = pool.objects.Length;
 
-        offsetY = topY - (rows - 1) * spaceY;
-        offsetX = -((columns - 1) * spaceX) / 2f;
+        offsetY = settings.topSpawn - (settings.rows - 1) * settings.spaceY;
+        offsetX = -((settings.columns - 1) * settings.spaceX) / 2f;
 
-        for (int i = 0; i < rows; i++)
+        for (int i = 0; i < settings.rows; i++)
         {
-            for (int j = 0; j < columns; j++)
+            for (int j = 0; j < settings.columns; j++)
             {
-                enemies[i, j] = pool.Get(i * columns + j);
-                enemies[i, j].transform.localPosition = new Vector2(offsetX + j * spaceX, offsetY + i * spaceY);
+                enemies[i, j] = pool.Get(i * settings.columns + j);
+                enemies[i, j].transform.localPosition = new Vector2(offsetX + j * settings.spaceX, offsetY + i * settings.spaceY);
 
-                if (i == rows - 1)
+                if (i == settings.rows - 1)
                 {
-                    enemies[i, j].animator.spriteSheet = enemySheets[0];
+                    enemies[i, j].animator.spriteSheet = settings.enemiesSheets[0];
                 }
-                else if (i == rows - 2 || i == rows - 3)
+                else if (i == settings.rows - 2 || i == settings.rows - 3)
                 {
-                    enemies[i, j].animator.spriteSheet = enemySheets[1];
+                    enemies[i, j].animator.spriteSheet = settings.enemiesSheets[1];
                 }
                 else
                 {
-                    enemies[i, j].animator.spriteSheet = enemySheets[2];
+                    enemies[i, j].animator.spriteSheet = settings.enemiesSheets[2];
                 }
 
-                enemies[i, j].gameObject.SetActive(true);
+                //enemies[i, j].gameObject.SetActive(true);
             }
         }
 
+        StepsTimer.OnStep += Init;
         StepsTimer.OnStep += RealIndex;
         StepsTimer.OnStep += MoveEnemiesDown;
         StepsTimer.OnStep += OnStep;
 
-        shootRandomInterval = maxTime;
+        shootRandomInterval = settings.maxShootTime;
+    }
+
+    private void Init()
+    {
+        bool found = false;
+        for (int i = 0; i < pool.objects.Length; i++)
+        {
+            if (!pool.objects[i].gameObject.activeSelf)
+            {
+                pool.objects[i].gameObject.SetActive(true);
+                return;
+            }
+        }
+
+        if (!found)
+            StepsTimer.OnStep -= Init;
     }
 
     private void RealIndex()
     {
+        if (!GameManager.GameStarted)
+            return;
+
         if (aliveEnemies <= 0)
         {
-            Debug.Log("End");
-            Debug.Break();
+            GameManager.instance.WinRound();
+            //Debug.Break();
             return;
         }
 
@@ -129,6 +142,9 @@ public class EnemysManager : MonoBehaviour
 
     private void OnStep()
     {
+        if (!GameManager.GameStarted)
+            return;
+
         if (movingVertical)
             return;
 
@@ -141,11 +157,17 @@ public class EnemysManager : MonoBehaviour
                 if (!pool.objects[i].gameObject.activeSelf)
                     continue;
 
-                if (pool.objects[i].transform.localPosition.x > limitX ||
-                    pool.objects[i].transform.localPosition.x < -limitX)
+                if (pool.objects[i].transform.localPosition.x > settings.horizontalScreenLimit ||
+                    pool.objects[i].transform.localPosition.x < -settings.horizontalScreenLimit)
                 {
                     pool.objects[index].MoveHorizontal(direction);
                     needMoveVertical = true;
+                    break;
+                }
+
+                if (pool.objects[i].transform.localPosition.y < settings.bottomScreenLimit)
+                {
+                    GameManager.instance.RemoveLife();
                     break;
                 }
             }
@@ -163,10 +185,10 @@ public class EnemysManager : MonoBehaviour
         enemy.SetActive(false);
         aliveEnemies--;
 
-        for (int j = 0; j < columns; j++)
+        for (int j = 0; j < settings.columns; j++)
         {
             bool found = false;
-            for (int i = 0; i < rows; i++)
+            for (int i = 0; i < settings.rows; i++)
             {
                 if (enemies[i, j].gameObject.activeSelf)
                 {
@@ -203,17 +225,18 @@ public class EnemysManager : MonoBehaviour
 
     private void Update()
     {
-        if (StepsTimer.PauseTimer)
+        if (StepsTimer.PauseTimer ||
+            !GameManager.GameStarted)
             return;
 
-        shootTimer += Time.deltaTime;
+        shootTimer += Time.deltaTime * PersistanceData.GetLevelMultiplier();
 
         if (shootTimer >= shootRandomInterval)
         {
             shootTimer = 0f;
-            shootRandomInterval = Random.Range(minTime, maxTime);
+            shootRandomInterval = Random.Range(settings.minShootTime, settings.maxShootTime);
 
-            SearchBottomEnemy(Random.Range(0, columns));
+            SearchBottomEnemy(Random.Range(0, settings.columns));
         }
     }
 
@@ -223,7 +246,7 @@ public class EnemysManager : MonoBehaviour
         {
             column++;
 
-            if (column >= columns)
+            if (column >= settings.columns)
             {
                 column = 0;
             }
@@ -234,6 +257,6 @@ public class EnemysManager : MonoBehaviour
 
         BulletsPool.Instance.InitBullet(Enums.BulletType.EnemyBullet, new Vector2(
             enemies[lastAvailableRow[column], column].transform.position.x,
-            enemies[lastAvailableRow[column], column].transform.position.y - 0.3f));
+            enemies[lastAvailableRow[column], column].transform.position.y - 0.45f));
     }
 }

@@ -17,7 +17,7 @@ public class Enums
         PlayerBullet,
         EnemyBullet
     }
-    
+
     public enum VfxType
     {
         PlayerDeath,
